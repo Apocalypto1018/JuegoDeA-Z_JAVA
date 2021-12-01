@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package juegoaz;
 
 import java.util.LinkedList;
@@ -13,9 +9,7 @@ import java.util.Scanner;
  * @author 
  */
 public class JuegoAZ {
-    
-    char[] letra=new char[]{'a','b','c','d','e','f','g','h','i','j','k','l','m','n','ñ','o','p','q','r','s','t','u','v','w','x','y','z'};
-    
+
     private static LinkedList<Jugador> jugadores=new LinkedList<Jugador>();
     private static Scanner sc = new Scanner(System.in);
     
@@ -157,7 +151,8 @@ public class JuegoAZ {
             jugadores.add(new Jugador(jugador2, 'j'));
             jugadores.add(new Jugador(jugador3, 'a'));
             
-            jugar(jugador1, jugador2, jugador3, tiempo); //invocacion del metodo jugar
+            juego partida=new juego(jugador1, jugador2, jugador3, tiempo, turno); //invocacion del metodo jugar
+            partida.run();
        }else{
            System.out.print("Volviendo al menu principal\n"); //mensaje de volviendo al menu principal...
        }
@@ -173,12 +168,6 @@ public class JuegoAZ {
         
         return n;
     }
-    
-    //metodo que ejecuta el juego
-    public static void jugar(String jugador1, String jugador2, String jugador3, int tiempo){
-        
-    }
-    
     
 }
     
