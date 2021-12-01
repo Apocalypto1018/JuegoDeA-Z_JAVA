@@ -12,13 +12,11 @@ package juegoaz;
 public class Jugador {
     
     private String nombre;
-    private int tiempo;
     private char tipo;
     
     //constructor
-    public Jugador(String nombre, int tiempo, char tipo){
+    public Jugador(String nombre, char tipo){
         this.nombre=nombre;
-        this.tiempo=tiempo;
         this.tipo=tipo;
     }
     
@@ -26,10 +24,7 @@ public class Jugador {
     public void setNombre(String nombre){
         this.nombre=nombre;
     }
-    
-    public void setTiempo(int tiempo){
-        this.tiempo=tiempo;
-    }
+
     
     public void setTipo(char tipo){
         this.tipo=tipo;
@@ -38,10 +33,6 @@ public class Jugador {
     //getters
     public String getNombre(){
         return this.nombre;
-    }
-    
-    public int getTiempo(){
-        return this.tiempo;
     }
     
     public char getTipo(){
