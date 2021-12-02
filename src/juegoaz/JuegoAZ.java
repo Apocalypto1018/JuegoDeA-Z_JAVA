@@ -78,8 +78,6 @@ public class JuegoAZ {
                 System.out.print("*Ingrese el alias del Jugador 2\n->");
                 jugador2 = sc.nextLine();
 
-                sc.nextLine(); //se limpia el buffer
-
                 //solicitud de los datos del jugador arbitro
                 System.out.print("*Ingrese el alias del Jugador arbitro\n->");
                 jugador3 = sc.nextLine();
@@ -130,7 +128,7 @@ public class JuegoAZ {
                         System.out.println("ERROR!, el tiempo ingresado no es optimo");
                     }
 
-                }while(tiempo<=0 && tiempo>50); //validacion de un tiempo optimo
+                }while(tiempo<=0 || tiempo>25); //validacion de un tiempo optimo
             }else{
                 tiempo=0; //de no querer jugar con tiempo, este sera cero...
             }
@@ -143,8 +141,9 @@ public class JuegoAZ {
                 
             } while (iniciar<0 || iniciar>1); //ciclo que valida una opcion correcta
             
+            sc.nextLine(); //se limpia el buffer
        }while(iniciar!=1);
-        
+         
        if(iniciar==1){
        //al confirmar la partida, se pasan los valores a la lista
             jugadores.add(new Jugador(jugador1, 'j'));
