@@ -55,6 +55,7 @@ public class JuegoAZ {
                 
                 case 2:{
                     menuJugadores();
+                    break;
                 }
                 
                 default:{
@@ -64,6 +65,8 @@ public class JuegoAZ {
             }
 
         } while (!salir);
+         
+        System.exit(0); //si se sale del bucle principal, entonces termina la aplicacion
 
     }
     
@@ -71,7 +74,7 @@ public class JuegoAZ {
     public static void registro(){
         //var locales
         int registro=0;
-        int iniciar=0;
+        int iniciar=-1;
         int turno=0;
         
        do{
@@ -148,7 +151,7 @@ public class JuegoAZ {
             } while (iniciar<0 || iniciar>1); //ciclo que valida una opcion correcta
             
             sc.nextLine(); //se limpia el buffer
-       }while(iniciar!=1);
+       }while(iniciar<0 || iniciar>1);
          
        if(iniciar==1){
        //al confirmar la partida, se pasan los valores a la lista
@@ -165,7 +168,8 @@ public class JuegoAZ {
     
     //metodo que corre el juego
     public static void run(String jugador1, String jugador2, String jugador3, int tiempo, int turno){
-        
+
+        //var locales del metodo
         int iterador=0;
         int i=0;
         String palabra=" "; 
@@ -183,6 +187,10 @@ public class JuegoAZ {
         
         while(!palabra.equals("fin")){ //ciclo que sirve como loop del juego
             
+            //si se juega con tiempo, se cuentan los segundos en el turno del jugador
+            Tiempo t=new Tiempo();
+            t.start();
+
             if(i==0){
                 
                 marcador(jugador1, tiempo, iterador, puntosJugador1); 
@@ -191,15 +199,33 @@ public class JuegoAZ {
                 palabra=sc.nextLine();
                 
                 if(!palabra.equals("fin")){
-                    
-                    if(validarPalabra(palabra, jugador3)){
-                        System.out.print("\n*Correcto. Ha ganado un punto extra\n");
-                        puntosJugador1++;
-                        aciertos1++;
-                    }else{
-                        System.out.print("\n*Incorrecto. Perdera un punto como penalizacion\n");
-                        puntosJugador1--;
-                        fallos1++;
+  
+                    if(tiempo>0){ //si se juega con tiempo...
+                        if(t.getN()>tiempo){ //se valida que no se exceda el tiempo
+                            System.out.print("\nTiempo excedido perdera un punto, gasto: "+t.getN() +"*El tiempo disponible era: "+tiempo);
+                            puntosJugador1--;
+                            fallos1++;
+                        }else{ // de no excederse...
+                            if(validarPalabra(palabra, jugador3)){
+                                System.out.print("\n*Correcto. Ha ganado un punto extra\n");
+                                puntosJugador1++;
+                                aciertos1++;
+                            }else{
+                                System.out.print("\n*Incorrecto. Perdera un punto como penalizacion\n");
+                                puntosJugador1--;
+                                fallos1++;
+                            }
+                        }
+                    }else{ //sino se juega con tiempo..
+                        if(validarPalabra(palabra, jugador3)){
+                            System.out.print("\n*Correcto. Ha ganado un punto extra\n");
+                            puntosJugador1++;
+                            aciertos1++;
+                        }else{
+                            System.out.print("\n*Incorrecto. Perdera un punto como penalizacion\n");
+                            puntosJugador1--;
+                            fallos1++;
+                        }
                     }
                 
                     i=1; //indica que el siguiente turno sera para el otro jugador
@@ -214,14 +240,32 @@ public class JuegoAZ {
                 
                 if(!palabra.equals("fin")){
 
-                    if(validarPalabra(palabra, jugador3)){
-                        System.out.print("\n*Correcto. Ha ganado un punto extra\n");
-                        puntosJugador2++;
-                        aciertos2++;
-                    }else if(!palabra.equals("fin")){
-                        System.out.print("\n*Incorrecto. Perdera un punto como penalizacion\n");
-                        puntosJugador2--;
-                        fallos2++;
+                   if(tiempo>0){ //si se juega con tiempo...
+                        if(t.getN()>tiempo){ //se valida que no se exceda el tiempo
+                            System.out.print("\nTiempo excedido perdera un punto, gasto: "+t.getN() +"*El tiempo disponible era: "+tiempo);
+                            puntosJugador2--;
+                            fallos2++;
+                        }else{ // de no excederse...
+                            if(validarPalabra(palabra, jugador3)){
+                                System.out.print("\n*Correcto. Ha ganado un punto extra\n");
+                                puntosJugador2++;
+                                aciertos2++;
+                            }else{
+                                System.out.print("\n*Incorrecto. Perdera un punto como penalizacion\n");
+                                puntosJugador2--;
+                                fallos2++;
+                            }
+                        }
+                    }else{ //sino se juega con tiempo..
+                        if(validarPalabra(palabra, jugador3)){
+                            System.out.print("\n*Correcto. Ha ganado un punto extra\n");
+                            puntosJugador2++;
+                            aciertos2++;
+                        }else{
+                            System.out.print("\n*Incorrecto. Perdera un punto como penalizacion\n");
+                            puntosJugador2--;
+                            fallos2++;
+                        }
                     }
 
                     i=0; //indica que el siguiente turno sera para el otro jugador
@@ -238,6 +282,7 @@ public class JuegoAZ {
                 iterador=0; //vuelve a acero
             }
             
+            t.setN(0); // se resetea la n del hilo que cuenta... para contar desde cero para el siguiente turno del otro jugador
         }
  
         int itera = 0;
@@ -337,20 +382,22 @@ public class JuegoAZ {
                 }
                    
                 case 2:{
+                    sc.nextLine();
+                    
                     System.out.println("            Eliminar Jugador.");
                     System.out.print("\n*Ingrese el ID del jugador a aliminar\n->");
                     id = sc.nextLine();
-                    sc.nextLine();
 
                     int itera = 0;
-                        int captura = -1;
-                        for (Jugador actual : jugadores) {
-                            if (actual.getID().equals(id)) {
-                                captura = itera;
-                            }
-                            itera++;
+                    int captura = -1;
+                    for (Jugador actual : jugadores) {
+                        if (actual.getID().equals(id)) {
+                            captura = itera;
                         }
-                        if (captura != -1) {
+                        itera++;
+                    }
+                    if (captura != -1) {
+                        do{
                             System.out.println("\n\n*ID: " + jugadores.get(captura).getID());
                             System.out.println("*Nombre: " + jugadores.get(captura).getNombre());
                             System.out.println("*Tipo: " + jugadores.get(captura).getTipo());
@@ -358,15 +405,21 @@ public class JuegoAZ {
                             System.out.println("*Fallos: " + jugadores.get(captura).getFallos());
                             System.out.println("Desea eliminar a este Jugador? s/n");
                             respuesta = sc.next().charAt(0);
-                            if (respuesta == 's') {
-                                jugadores.remove(captura);
-                                System.out.println("Colaborador eliminado exitosamente");
-                            } else {
-                                break;
+                            
+                            if(respuesta!='s' && respuesta!='n'){
+                                System.out.println("*\nSolo puede ingresar 's' o 'n'\n" );
                             }
+                        }while(respuesta!='s' && respuesta!='n');
+                        
+                        if (respuesta == 's') {
+                            jugadores.remove(captura);
+                            System.out.println("Jugador eliminado exitosamente");
                         } else {
-                            System.out.println("No existen datos para el ID ingresado");
+                            break;
                         }
+                    }else{
+                        System.out.println("No existen datos para el ID ingresado");
+                    }
                     
                     break;
                 }
@@ -377,19 +430,19 @@ public class JuegoAZ {
                     System.out.println("Ingrese ID del Jugador");
                     id = sc.nextLine();
                      
-                        int itera = 0;
-                        int captura = -1;
-                        for (Jugador actual : jugadores) {
-                            if (actual.getID().equals(id)) {
-                                captura = itera;
-                            }
-                            itera++;
+                    int itera = 0;
+                    int captura = -1;
+                    for (Jugador actual : jugadores) {
+                        if (actual.getID().equals(id)) {
+                            captura = itera;
                         }
-                        if (captura != -1) {
-                            modificaJugador(captura);
-                        } else {
-                            System.out.println("No existen datos para el ID ingresado");
-                        }
+                        itera++;
+                    }
+                    if (captura != -1) {
+                        modificaJugador(captura);
+                    } else {
+                        System.out.println("No existen datos para el ID ingresado");
+                    }
                     
                     break;
                 }
@@ -455,7 +508,6 @@ public class JuegoAZ {
         
         return n;
     }
-    
 }
     
     
