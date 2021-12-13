@@ -202,7 +202,7 @@ public class JuegoAZ {
   
                     if(tiempo>0){ //si se juega con tiempo...
                         if(t.getN()>tiempo){ //se valida que no se exceda el tiempo
-                            System.out.print("\nTiempo excedido perdera un punto, gasto: "+t.getN() +"*El tiempo disponible era: "+tiempo);
+                            System.out.print("\nTiempo excedido perdera un punto, gasto: "+t.getN() +" Segundos. *El tiempo disponible era: "+tiempo);
                             puntosJugador1--;
                             fallos1++;
                         }else{ // de no excederse...
@@ -242,7 +242,7 @@ public class JuegoAZ {
 
                    if(tiempo>0){ //si se juega con tiempo...
                         if(t.getN()>tiempo){ //se valida que no se exceda el tiempo
-                            System.out.print("\nTiempo excedido perdera un punto, gasto: "+t.getN() +"*El tiempo disponible era: "+tiempo);
+                            System.out.print("\nTiempo excedido perdera un punto, gasto: "+t.getN() +" Segundos. *El tiempo disponible era: "+tiempo);
                             puntosJugador2--;
                             fallos2++;
                         }else{ // de no excederse...
@@ -297,6 +297,8 @@ public class JuegoAZ {
         jugadores.get(captura).setAciertos(aciertos1);
         jugadores.get(captura).setFallos(fallos1);
         
+        int capj1=captura;
+        
         itera = 0;
         captura = -1;
         
@@ -310,6 +312,59 @@ public class JuegoAZ {
         jugadores.get(captura).setAciertos(aciertos2);
         jugadores.get(captura).setFallos(fallos2);
         
+        int capj2=captura;
+        
+        //rutina del reporte....]
+        System.out.print("\n     *Reporte\n\n");
+        
+        if(aciertos1>aciertos2){ //si gana el jugador 1...
+            System.out.println("\nGanador:\n");
+            System.out.println("Nombre: "+jugadores.get(capj1).getNombre());
+            System.out.println("Aciertos: "+jugadores.get(capj1).getAciertos());
+            System.out.println("Fallos: "+jugadores.get(capj1).getFallos());
+            
+            System.out.println("\nOtro jugador:\n");
+            System.out.println("Nombre: "+jugadores.get(capj2).getNombre());
+            System.out.println("Aciertos: "+jugadores.get(capj2).getAciertos());
+            System.out.print("Fallos: "+jugadores.get(capj2).getFallos());
+            
+            System.out.println("\nArbitro:\n");
+            System.out.println("Nombre: "+jugador3);
+
+        }else if(aciertos1>aciertos2){ //si gana el jugador 2...
+            System.out.println("\nGanador:\n");
+            System.out.println("Nombre: "+jugadores.get(capj2).getNombre());
+            System.out.println("Aciertos: "+jugadores.get(capj2).getAciertos());
+            System.out.print("Fallos: "+jugadores.get(capj2).getFallos());
+            
+            System.out.println("\nOtro jugador:\n");
+            System.out.println("Nombre: "+jugadores.get(capj1).getNombre());
+            System.out.println("Aciertos: "+jugadores.get(capj1).getAciertos());
+            System.out.print("Fallos: "+jugadores.get(capj1).getFallos());
+            
+            System.out.println("\nArbitro:\n");
+            System.out.println("Nombre: "+jugador3);
+            
+        }else{ //empate
+            System.out.println("\nEmpate:\n");
+            
+            System.out.println("\nJugador1:\n");
+            System.out.println("Nombre: "+jugadores.get(capj1).getNombre());
+            System.out.println("Aciertos: "+jugadores.get(capj1).getAciertos());
+            System.out.print("Fallos: "+jugadores.get(capj1).getFallos());
+            
+            System.out.println("\nJugador2:\n");
+            System.out.println("Nombre: "+jugadores.get(capj2).getNombre());
+            System.out.println("Aciertos: "+jugadores.get(capj2).getAciertos());
+            System.out.print("Fallos: "+jugadores.get(capj2).getFallos());
+            
+            System.out.println("\nArbitro:\n");
+            System.out.println("Nombre: "+jugador3);
+        }
+        
+        System.out.print("\nEsperando enter...");
+         sc.nextLine(); //se limpia el buffer
+        //mensaje de salida
         System.out.print("Volviendo al menu principal\n\n");
         
     }
